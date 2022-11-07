@@ -1,19 +1,17 @@
-import React, { useContext } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import img from '../../assets/loginImg/loginimage.jpg'
-import { AuthContext } from '../../context/AuthProvider/AuthProvider';
-
-
+import React, { useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import img from "../../assets/loginImg/loginimage.jpg";
+import { AuthContext } from "../../context/AuthProvider/AuthProvider";
 
 const Login = () => {
-    const { login } = useContext(AuthContext);
+	const { login } = useContext(AuthContext);
 
-	const location = useLocation()
-	const navigate = useNavigate()
+	const location = useLocation();
+	const navigate = useNavigate();
 
-	const from = location.state?.from?.pathname || '/'
+	const from = location.state?.from?.pathname || "/";
 
-    const handleLogin = (event) => {
+	const handleLogin = (event) => {
 		event.preventDefault();
 
 		const form = event.target;
@@ -23,29 +21,28 @@ const Login = () => {
 		login(email, password)
 			.then((result) => {
 				const user = result.user;
-                
+
 				const currentUser = {
-					email : user.email
-				}
-				console.log(currentUser)
+					email: user.email,
+				};
+				console.log(currentUser);
 
 				// get jwt token
-				fetch('http://localhost:5000/jwt',{
-					method : 'POST',
-					headers : {
-						'content-type' : 'application/json',
-
+				fetch("https://practice-makeup-server.vercel.app/jwt", {
+					method: "POST",
+					headers: {
+						"content-type": "application/json",
 					},
-					body : JSON.stringify(currentUser)
+					body: JSON.stringify(currentUser),
 				})
-				.then((res) => res.json())
-				.then((data) =>{
-					console.log(data);
+					.then((res) => res.json())
+					.then((data) => {
+						console.log(data);
 
-					// local storage is the easiest but not the best place to store jwt token
-					localStorage.setItem('makeup-token', data.token)
-					navigate(from,{replace: true})
-				})
+						// local storage is the easiest but not the best place to store jwt token
+						localStorage.setItem("makeup-token", data.token);
+						navigate(from, { replace: true });
+					});
 
 				// navigate before create token
 				// navigate(from,{replace: true})
@@ -53,8 +50,8 @@ const Login = () => {
 			.catch((error) => console.log(error));
 	};
 
-    return (
-        <div className="hero w-full my-20">
+	return (
+		<div className="hero w-full my-20">
 			<div className="hero-content gap-20 grid md:grid-cols-2 flex-col lg:flex-row">
 				<div className="text-center lg:text-left">
 					<img className="" src={img} alt="" />
@@ -95,8 +92,7 @@ const Login = () => {
 					</form>
 					<p className="text-center">
 						New to genius car ?{" "}
-						<Link
-                         className="text-orange-600 font-bold" to="/signup">
+						<Link className="text-orange-600 font-bold" to="/signup">
 							{" "}
 							Sign Up
 						</Link>
@@ -105,7 +101,7 @@ const Login = () => {
 				</div>
 			</div>
 		</div>
-    );
+	);
 };
 
 export default Login;

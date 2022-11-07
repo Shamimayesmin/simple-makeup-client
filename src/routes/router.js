@@ -12,37 +12,47 @@ import Main from "../layout/Main";
 import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
-    {
-        path: '/',
+	{
+		path: "/",
 
-        element : <Main></Main>,
-        errorElement : <ErrorPage></ErrorPage>,
-        
-        children : [
-            {
-                path: '/',
-                element : <Home></Home>
-            },
-            {
-                path : '/login',
-                element : <Login></Login>
-            },
-            {
-                path : '/signup',
-                element : <SignUp></SignUp>
-            },
-            {
-                path : '/checkout/:id',
-                element : <PrivateRoute><CheckOut></CheckOut></PrivateRoute>,
-                loader : ({params})=>fetch(`http://localhost:5000/products/${params.id}`)
-            },
-            {
-                path : '/orders',
-                element : <PrivateRoute><Orders></Orders></PrivateRoute>
-            }
+		element: <Main></Main>,
+		errorElement: <ErrorPage></ErrorPage>,
 
-        ]
-    }
-])
+		children: [
+			{
+				path: "/",
+				element: <Home></Home>,
+			},
+			{
+				path: "/login",
+				element: <Login></Login>,
+			},
+			{
+				path: "/signup",
+				element: <SignUp></SignUp>,
+			},
+			{
+				path: "/checkout/:id",
+				element: (
+					<PrivateRoute>
+						<CheckOut></CheckOut>
+					</PrivateRoute>
+				),
+				loader: ({ params }) =>
+					fetch(
+						`https://practice-makeup-server.vercel.app/products/${params.id}`
+					),
+			},
+			{
+				path: "/orders",
+				element: (
+					<PrivateRoute>
+						<Orders></Orders>
+					</PrivateRoute>
+				),
+			},
+		],
+	},
+]);
 
 export default router;

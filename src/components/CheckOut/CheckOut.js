@@ -1,32 +1,32 @@
-import React, { useContext } from 'react';
-import { useLoaderData } from 'react-router-dom';
-import { AuthContext } from '../../context/AuthProvider/AuthProvider';
+import React, { useContext } from "react";
+import { useLoaderData } from "react-router-dom";
+import { AuthContext } from "../../context/AuthProvider/AuthProvider";
 
 const CheckOut = () => {
-    const {name,price,_id} = useLoaderData()
-    const {user} = useContext(AuthContext)
-    console.log(user);
+	const { name, price, _id } = useLoaderData();
+	const { user } = useContext(AuthContext);
+	console.log(user);
 
-    const handlePlaceOrder = (event) =>{
-        event.preventDefault();
+	const handlePlaceOrder = (event) => {
+		event.preventDefault();
 
-        const form = event.target;
-        const name = `${form.firstName.value} ${form.lastName.value}`
-        const email = user?.email || "unregistered";
-        const phone = form.phone.value;
-        const message = form.message.value;
+		const form = event.target;
+		const name = `${form.firstName.value} ${form.lastName.value}`;
+		const email = user?.email || "unregistered";
+		const phone = form.phone.value;
+		const message = form.message.value;
 
-        const order = {
-            product : _id,
-            productName : name,
-            price,
-            customer : name,
-            email,
-            phone,
-            message
-        };
+		const order = {
+			product: _id,
+			productName: name,
+			price,
+			customer: name,
+			email,
+			phone,
+			message,
+		};
 
-        fetch("http://localhost:5000/orders", {
+		fetch("https://practice-makeup-server.vercel.app/orders", {
 			method: "POST",
 			headers: {
 				"content-type": "application/json",
@@ -42,11 +42,11 @@ const CheckOut = () => {
 				}
 			})
 			.catch((err) => console.error(err));
-    }
+	};
 
-    return (
-        <div>
-          <form onSubmit={handlePlaceOrder}>
+	return (
+		<div>
+			<form onSubmit={handlePlaceOrder}>
 				<h2 className="text-4xl">You are about to order : {name}</h2>
 				<h4 className="text-3xl">price: {price}</h4>
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -85,10 +85,14 @@ const CheckOut = () => {
 					placeholder="Your Message"
 				></textarea>
 
-				<input className="btn btn-accent mt-4" type="submit" value="Place your order" />
-			</form>  
-        </div>
-    );
+				<input
+					className="btn btn-accent mt-4"
+					type="submit"
+					value="Place your order"
+				/>
+			</form>
+		</div>
+	);
 };
 
 export default CheckOut;
